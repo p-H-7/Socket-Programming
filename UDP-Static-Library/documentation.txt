@@ -1,0 +1,61 @@
+NETWORKS LAB ASSIGNMENT 4
+HAASITA PINNEPU	19CS30021
+DEEPIKA MAJJI 19CS30027
+
+List of Data Structures used and their brief description
+
+All data structures were arrays and are as below:
+
+msg unack_msg_table[];
+recv_msg recv_msg_table[];
+recv_buf recv_buffer[];
+
+typedef struct received_buffer
+{
+	char buffer[100];			// Content of the received message
+	int len;			// Length of the received message
+	struct sockaddr_in addr;	// Client address from which the message was received
+    socklen_t clilen;
+}recv_buf;
+
+typedef struct received_message
+{
+	int counter;			// Header of the received message
+	struct sockaddr_in addr;	// Client address from which the message was received
+}recv_msg;
+
+typedef struct message
+{
+	time_t time;			// Time of sending of message
+	int counter;			// Header of the message
+	char buffer[100];			// Content of the message
+	int flag;			// Flags for sendto
+	size_t length;			// Length of the message
+	struct sockaddr* dest_addr;	// Destination address
+	socklen_t addrlen;		// Length of destination address
+}msg;
+
+
+Every message contains a header equivalent to the length of short. It contains the counter. Also, the acknowledgements have a counter value greater than 100, because 100 is the maximum permissible counter value here. In the acks, the header of the message to which the ack belongs follows the counter.
+
+Functions are as below
+
+int r_socket(int domain, int type, int protocol)
+
+Supported `type`: SOCK_MRP only
+
+int r_sendto(int sockfd, const void* buf_here, size_t len, int flag, const struct sockaddr* dest_addr, socklen_t addrlen)
+
+All flags supported same as that in UDP
+
+int r_recvfrom(int sockfd, char *buf, size_t len_here, int flag, const struct  sockaddr * addr, socklen_t * addrlen)
+
+Supported `flag`: 0 for normal execution, MSG_PEEK for peeking at message without removing from buffer.
+
+int r_bind(int sockfd, const struct sockaddr* servaddr,  socklen_t addrlen)
+
+Arguments same as socket binding.
+
+int r_close(int sockfd)
+
+Argument same as socket closing.
